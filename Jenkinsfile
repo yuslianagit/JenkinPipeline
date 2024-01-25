@@ -25,7 +25,7 @@ podTemplate(containers: [
             sh 'hostname'
             sh 'git clone https://github.com/yuslianagit/JenkinPipeline.git'
             sh 'ls -la jenkins_python'
-            sh 'python3 jenkins_python/cal.py'
+            sh 'python3 JenkinPipeline/cal.py'
           }
           stage(' Installing packages')
           {
@@ -38,19 +38,19 @@ podTemplate(containers: [
             echo 'Y'
             sh 'apt install -y python3-requests'
             echo 'Y'
-            sh 'python3 jenkins_python/cal.py'
+            sh 'python3 JenkinPipeline/cal.py'
           }
           stage('Static Code Check')
           {
             sh 'pwd'
             sh 'ls -la'
             sh 'python3 -V'
-            sh 'ls -la jenkins_python'
-            sh 'python3 jenkins_python/cal.py'
+            sh 'ls -la JenkinPipeline'
+            sh 'python3 JenkinPipeline/cal.py'
           }
           stage('Unit Test Check')
           {
-            sh 'python3 jenkins_python/JenkinsStages.py'   
+            sh 'python3 JenkinPipeline/JenkinsStages.py'   
           }
       }
     }

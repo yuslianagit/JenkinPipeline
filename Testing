@@ -1,0 +1,55 @@
+podTemplate(containers: [
+  containerTemplate(
+    name: 'python', 
+    image: 'jenkins/inbound-agent-python:latest', 
+    command: 'sleep', 
+    args: '30d'
+  )
+]) {
+  node(POD_LABEL) {
+    stage('Get a Python Project') {
+      container('python') {
+        stage('Checkout Code') {
+          sh 'apt update'
+          sh 'apt install -y nano'
+          sh 'apt install -y python3'
+          sh 'pwd'
+          sh 'ls -la'
+          sh 'python3 -V'
+          sh 'hostname'
+          sh 'git clone https://github.com/yuslianagit/JenkinPipeline.git'
+          sh 'ls -la jenkins_python'
+          sh 'python3 jenkins_python/cal.py'
+        }
+      }
+    }
+    
+    stage('Installing packages') {
+      container('python') {
+        sh 'apt update'
+        sh 'apt install -y nano'
+        sh 'apt install -y python3-pip'
+        sh 'python3 -m pip install --upgrade pip'
+        sh 'apt install -y python3-psutil'
+        sh 'apt install -y python3-requests'
+        sh 'python3 jenkins_python/cal.py'
+      }
+    }
+    
+    stage('Static Code Check') {
+      container('python') {
+        sh 'pwd'
+        sh 'ls -la'
+        sh 'python3 -V'
+        sh 'ls -la jenkins_python'
+        sh 'python3 jenkins_python/cal.py'
+      }
+    }
+
+    stage('Unit Test Check') {
+      container('python') {
+        sh 'python3 jenkins_python/JenkinsStages.py'   
+      }
+    }
+  }
+}

@@ -1,0 +1,71 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout Code') {
+            steps {
+                container('JenkinsPython') {
+                    echo 'Current directory:'
+                    sh 'pwd'
+                    echo 'Listing files:'
+                    sh 'ls -la'
+                    echo 'Python version:'
+                    sh 'python3 -v'
+                    echo 'Hostname:'
+                    sh 'hostname'
+                    echo 'Cloning repository...'
+                    sh 'git clone https://github.com/yuslianagit/FYP.git'
+                    echo 'Listing files in jenkins_python directory:'
+                    sh 'ls -la jenkins_python'
+                    echo 'Running cal.py:'
+                    sh 'python jenkins_python/cal.py'
+                }
+            }
+        }
+
+        stage('Installing Packages') {
+            steps {
+                container('JenkinsPython') {
+                    echo 'Current directory:'
+                    sh 'pwd'
+                    echo 'Listing files:'
+                    sh 'ls -la'
+                    echo 'Python version:'
+                    sh 'python3 -v'
+                    echo 'Installing pip:'
+                    sh 'apt-get update && apt-get install -y python3-pip'
+                    echo 'Installing requests:'
+                    sh 'pip install requests'
+                    echo 'Running cal.py:'
+                    sh 'python jenkins_python/cal.py'
+                }
+            }
+        }
+
+        stage('Static Code Check') {
+            steps {
+                container('JenkinsPython') {
+                    echo 'Current directory:'
+                    sh 'pwd'
+                    echo 'Listing files:'
+                    sh 'ls -la'
+                    echo 'Python version:'
+                    sh 'python3 -v'
+                    echo 'Listing files in jenkins_python directory:'
+                    sh 'ls -la jenkins_python'
+                    echo 'Running cal.py:'
+                    sh 'python jenkins_python/cal.py'
+                }
+            }
+        }
+
+        stage('Unit Test Check') {
+            steps {
+                container('JenkinsPython') {
+                    echo 'Running testcal.py:'
+                    sh 'python jenkins_python/testcal.py'
+                }
+            }
+        }
+    }
+}

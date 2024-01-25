@@ -14,7 +14,6 @@ podTemplate(containers: [
       {
           stage('Checkout Code')
           {
-            sh 'apt update'
             sh 'apt install -y nano'
             echo 'Y'
             sh 'apt install -y pip'

@@ -1,7 +1,7 @@
 import psutil
 import requests
 
-class SystemMonitor:
+class SystemChecker:
     @staticmethod
     def check_disk_usage():
         disk_usage_percent = psutil.disk_usage('/').percent
@@ -28,20 +28,20 @@ class SystemMonitor:
         except requests.ConnectionError:
             return False
 
-def main():
-    monitor = SystemMonitor()
+    def perform_system_checks(self):
+        disk_check = self.check_disk_usage()
+        cpu_check = self.check_cpu_utilization()
+        localhost_check = self.check_localhost_availability()
+        internet_check = self.check_internet_availability()
 
-    disk_check = monitor.check_disk_usage()
-    cpu_check = monitor.check_cpu_utilization()
-    localhost_check = monitor.check_localhost_availability()
-    internet_check = monitor.check_internet_availability()
+        if not (disk_check and cpu_check):
+            print("ERROR! Disk usage or CPU usage failed.")
+        elif localhost_check and internet_check:
+            print("Everything is OK.")
+        else:
+            print("Network checks failed.")
 
-    if not (disk_check and cpu_check):
-        print("ERROR! Disk usage or CPU usage failed.")
-    elif localhost_check and internet_check:
-        print("Everything is OK.")
-    else:
-        print("Network checks failed.")
-
+# Example usage:
 if __name__ == "__main__":
-    main()
+    system_checker = SystemChecker()
+    system_checker.perform_system_checks()
